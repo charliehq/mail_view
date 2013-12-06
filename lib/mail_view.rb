@@ -37,7 +37,7 @@ class MailView
       missing_format = ext && format.nil?
 
       if actions.include?(name) && !missing_format
-        mail = build_mail(name)
+        mail = build_mail(name, request.params)
 
         # Requested a specific bare MIME part. Render it verbatim.
         if part_type = request.params['part']
@@ -52,7 +52,7 @@ class MailView
         # Otherwise, show our message headers & frame the body.
         else
           part = find_preferred_part(mail, [format, 'text/html', 'text/plain'])
-          ok email_template.render(Object.new, :name => name, :mail => mail, :part => part, :part_url => part_body_url(part))
+          ok email_template.render(Object.new, :name => name, :mail => mail, :part => part, :part_url => part_body_url(part, request.params))
         end
       else
         not_found
@@ -97,9 +97,14 @@ class MailView
       end
     end
 
-    def build_mail(name)
-      mail = send(name)
-      Mail.inform_interceptors(mail) if defined? Mail
+    def build_mail(name, params)
+      if method(name).parameters.any?
+        mail = send(name, params)
+      else
+        mail = send(name)
+      end
+      # Commented out the following line because our whitelist interceptor can cause problems
+      # Mail.inform_interceptors(mail) if defined? Mail
       mail
     end
 
@@ -109,8 +114,8 @@ class MailView
       found || mail
     end
 
-    def part_body_url(part)
-      '?part=%s' % Rack::Utils.escape([part.main_type, part.sub_type].compact.join('/'))
+    def part_body_url(part, params)
+      "?part=#{Rack::Utils.escape([part.main_type, part.sub_type].compact.join('/'))}&#{params.to_query}"
     end
 
     def find_part(mail, matching_content_type)

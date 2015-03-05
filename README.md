@@ -3,15 +3,24 @@ MailView -- Visual email testing
 
 Preview plain text and html mail templates in your browser without redelivering it every time you make a change.
 
+Rails 4.1
+---------
+NOTE: MailView is part of Rails 4.1+. No need for the plugin anymore!
+
+* 4.1.0 API docs: http://api.rubyonrails.org/v4.1.0/classes/ActionMailer/Base.html#class-ActionMailer::Base-label-Previewing+emails
+* Release notes: http://edgeguides.rubyonrails.org/4_1_release_notes.html#action-mailer-previews
+* Pull request: https://github.com/rails/rails/pull/13332/files
+
+
 Install
 -------
 
 Add the gem to your `Gemfile`:
 
 ```ruby
-  gem 'mail_view', :git => 'https://github.com/37signals/mail_view.git'
+  gem 'mail_view', :git => 'https://github.com/basecamp/mail_view.git'
   # or
-  gem "mail_view", "~> 1.0.3"
+  gem "mail_view", "~> 2.0.4"
 ```
 
 And run `bundle install`.

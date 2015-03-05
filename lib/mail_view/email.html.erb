@@ -2,6 +2,10 @@
 <html><head>
 <meta name="viewport" content="width=device-width" />
 <style type="text/css">
+  body {
+    margin: 0;
+  }
+
   header {
     width: 100%;
     padding: 10px 0 0 0;
@@ -83,7 +87,7 @@
 
     <% if mail.multipart? %>
       <dd>
-        <select onchange="top.messageBody.location=this.options[this.selectedIndex].value;">
+        <select onchange="document.getElementsByName('messageBody')[0].src=this.options[this.selectedIndex].value;">
           <option value="?part=text%2Fhtml">View as HTML email</option>
           <option value="?part=text%2Fplain">View as plain-text email</option>
         </select>
